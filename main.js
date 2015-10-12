@@ -5,6 +5,7 @@ function ProblemList() {
     var numAPI = "http://uhunt.felix-halim.net/api/p/num/";
     var problemURL = "https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=";
     var accept = 90;
+    var never = 0;
     var verdictMesg = {
         0: "Never submit!",
         10: "Submission error",
@@ -92,7 +93,8 @@ function ProblemList() {
                 table.append(hlevel);
                 for(var i = 0; i < problems.length; i++) {
                     var pnum = problems[i];
-                    var row = $("<tr/>").addClass(problemStatus[pnum]["verdict"] == accept ? "pass" : "fail");
+                    var row = $("<tr/>").addClass(problemStatus[pnum]["verdict"] == accept ? "pass" : 
+                                                  problemStatus[pnum]["verdict"] == never ? "never" : "fail");
                     var problemNum = $("<td/>").addClass("problem-num").append(
                         $("<a/>").attr("href", getURL(problemStatus[pnum]["id"])).attr("target","_blank").text(pnum));
                     var problemTitle = $("<td/>").addClass("problem-title").text(problemStatus[pnum]["title"]);
