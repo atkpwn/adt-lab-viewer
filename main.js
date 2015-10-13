@@ -2,7 +2,7 @@
 
 function ProblemList() {
     var subsPidsAPI = "http://uhunt.felix-halim.net/api/subs-pids/";
-    var numAPI = "http://uhunt.felix-halim.net/api/p/num/";
+    var pnumAPI = "http://uhunt.felix-halim.net/api/p/num/";
     var user2idAPI = "http://uhunt.felix-halim.net/api/uname2uid/";
     var problemURL = "https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=";
     var accept = 90;
@@ -39,7 +39,7 @@ function ProblemList() {
             $.each(data, function(topic, levels) {
                 $.each(levels, function(level, problems) {
                     for(var i = 0; i < problems.length; i++) {
-                        calls.push($.getJSON(numAPI + problems[i], function(data) {
+                        calls.push($.getJSON(pnumAPI + problems[i], function(data) {
                             idToNum[data["pid"]] = data["num"];
                             problemStatus[data["num"]] = {
                                 "id": data["pid"],
@@ -63,15 +63,17 @@ function ProblemList() {
     }
 
     function getUser() {
-        var userId = $("#user-id").val();
-        if(userId) {
-            if(isNaN(userId)) {
-                $.get(user2idAPI + userId, function(id) {
-                    getUserStatus(id);
+        var input = $("#user-id").val();
+        if(input) {
+            if(isNaN(input)) {
+                console.log("input username");
+                $.get(user2idAPI + input, function(userid) {
+                    getUserStatus(userid);
                 });
             }
             else {
-                getUserStatus(userId);
+                console.log("input user ID");
+                getUserStatus(input);
             }
         }
     };
