@@ -2,7 +2,6 @@
 
 function ProblemList() {
     var subsPidsAPI = "http://uhunt.felix-halim.net/api/subs-pids/";
-    var pnumAPI = "http://uhunt.felix-halim.net/api/p/num/";
     var user2idAPI = "http://uhunt.felix-halim.net/api/uname2uid/";
     var problemURL = "https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=";
     var accept = 90;
@@ -24,67 +23,51 @@ function ProblemList() {
     };
     var problemList;
     var problemStatus;
-    var idToNum;
 
     function getURL(pid) {
         return problemURL + pid;
     }
 
-    function createProblemList() {
-        idToNum = {};
-        problemStatus = {};
-        $.getJSON("tasks.json", function(data) {
-            var calls = [];
-            problemList = data;
-            $.each(data, function(topic, levels) {
-                $.each(levels, function(level, problems) {
-                    for(var i = 0; i < problems.length; i++) {
-                        calls.push($.getJSON(pnumAPI + problems[i], function(data) {
-                            idToNum[data["pid"]] = data["num"];
-                            problemStatus[data["num"]] = {
-                                "id": data["pid"],
-                                "title": data["title"],
-                                "verdict": 0
-                            };
-                        }));
-                    }
-                });
-            });
-            $.when.apply($, calls).then(function() {
-                getUser();
-            });
-        });     
-    }
-
     function getStatusURL(userId) {
         return subsPidsAPI + userId + "/" + $.map(problemStatus, function(status, p) {
-            return status.id;
+            return p;
         }).join(",");
     }
 
     function getUser() {
         var input = $("#user-id").val();
         if(input) {
+            $("#task-list").text("Loading...");
             if(isNaN(input)) {
-                console.log("input username");
                 $.get(user2idAPI + input, function(userid) {
-                    getUserStatus(userid);
+                    createProblemList(userid);
                 });
             }
             else {
-                console.log("input user ID");
-                getUserStatus(input);
+                createProblemList(input);
             }
         }
-    };
+    }
+
+    function createProblemList(userId) {
+        problemStatus = {};
+        $.getJSON("tasks.json", function(data) {
+            problemList = data.problemList;
+            problemStatus = data.problems;
+            $.each(problemStatus, function(pid, obj) {
+                obj["verdict"] = 0;
+            });
+            getUserStatus(userId);
+        });
+    }
 
     function getUserStatus(userId) {
         $.getJSON(getStatusURL(userId), function(data) {
             $.each(data, function(user, details) {
-                for(var i = 0; i < details["subs"].length; i++) {
-                    var pnum = idToNum[details["subs"][i][1]];
-                    var verdict = details["subs"][i][2];
-                    problemStatus[pnum].verdict = problemStatus[pnum] == accept ? accept : verdict;
+                for(var i = 0; i < details.subs.length; i++) {
+                    var pid = details.subs[i][1];
+                    var verdict = details.subs[i][2];
+                    problemStatus[pid].verdict = problemStatus[pid] == accept ? accept : verdict;
                 }
                 displayResult();
             });
@@ -108,20 +91,20 @@ function ProblemList() {
                 
                 table.append(hlevel);
                 for(var i = 0; i < problems.length; i++) {
-                    var pnum = problems[i];
-                    var row = $("<tr/>").addClass(problemStatus[pnum]["verdict"] == accept ? "pass" : 
-                                                  problemStatus[pnum]["verdict"] == never ? "never" : "fail");
+                    var pid = problems[i];
+                    var row = $("<tr/>").addClass(problemStatus[pid]["verdict"] == accept ? "pass" : 
+                                                  problemStatus[pid]["verdict"] == never ? "never" : "fail");
                     var problemNum = $("<td/>")
                             .addClass("problem-num")
                             .append($("<a/>")
-                                    .attr("href", getURL(problemStatus[pnum]["id"]))
-                                    .attr("target","_blank").text(pnum));
+                                    .attr("href", getURL(pid))
+                                    .attr("target","_blank").text(problemStatus[pid].num));
                     var problemTitle = $("<td/>")
                             .addClass("problem-title")
-                            .text(problemStatus[pnum]["title"]);
+                            .text(problemStatus[pid]["title"]);
                     var verdict = $("<td/>")
                             .addClass("problem-verdict")
-                            .text(verdictMesg[problemStatus[pnum]["verdict"]]);
+                            .text(verdictMesg[problemStatus[pid]["verdict"]]);
                     row.append(problemNum);
                     row.append(problemTitle);
                     row.append(verdict);
@@ -135,8 +118,7 @@ function ProblemList() {
     this.start = function() {
         $("#user-id").keypress(function(e) {
             if(e.which == 13) {
-                createProblemList();
-                $("#task-list").text("Loading...");
+                getUser();
                 return false;
             }
         });
