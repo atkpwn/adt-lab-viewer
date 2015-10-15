@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>Abstract Data Typed Lab: Problem List</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="lib/jquery-1.11.3.min.js"></script>
         <script src="main.js"></script>
         <style>
@@ -22,11 +23,26 @@
              background-color: #DDDDDD;
              color: black; 
          }
+         @media screen and (min-width: 750px) {
+             table {
+                 width: 80%;
+                 max-width: 800px;
+             }
+         }
+         @media screen and (min-width: 600px) and (max-width: 750px) {
+             table {
+                 min-width: 569px;
+             }
+         }
+         @media screen and (max-width: 600px) {
+             table {
+                 width: 100%;
+                 min-width: 264px;
+             }
+         }
          table {
              border: 1px solid black;
              margin: 5px 0px;
-             width: 60%;
-             min-width: 264px;
          }
          tr.topic th {
              font-weight: bold;
