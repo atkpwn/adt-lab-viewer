@@ -2,7 +2,6 @@
 <html>
     <head>
         <title>Abstract Data Typed Lab: Problem List</title>
-        <!-- <link href="style.css" rel="stylesheet" type="text/css"> -->
         <script src="lib/jquery-1.11.3.min.js"></script>
         <script src="main.js"></script>
         <style>
@@ -24,12 +23,12 @@
              color: black; 
          }
          table {
-             width: 60%;
              border: 1px solid black;
              margin: 5px 0px;
+             width: 60%;
+             min-width: 264px;
          }
          tr.topic th {
-             width: 100%;
              font-weight: bold;
              margin: 5px;
              border-bottom: 1px solid #F1F1F1;
@@ -47,7 +46,9 @@
              width: 50%;
          }
          td.problem-verdict {
-             width: 29%;
+             float: right;
+             width: 20%;
+             min-width: 70px;
          }
          td a {
              color: #4488BB;
