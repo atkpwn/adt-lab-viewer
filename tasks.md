@@ -51,3 +51,14 @@
 
 ## Hard problems
 * 11234
+
+# Adt lab/Data structure and sorting problems 2
+## Easy problems
+* 11849
+* 484
+
+## Medium problems
+* 11572
+* 11136
+* 11286
+* 978
