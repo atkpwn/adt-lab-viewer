@@ -52,7 +52,7 @@
 ## Hard problems
 * 11234
 
-# Adt lab/Data structure and sorting problems 2
+# Data structure and sorting problems 2
 ## Easy problems
 * 11849
 * 484
@@ -62,3 +62,14 @@
 * 11136
 * 11286
 * 978
+
+# Graph problems
+## Easy problems
+* 11831
+* 11094
+* 352
+
+## Medium problems
+* 11902
+* 336
+* 429
