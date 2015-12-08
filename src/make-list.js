@@ -49,7 +49,7 @@ function makeProblemList() {
     }
 
     this.start = function() {
-        $.get('../tasks.md', function(data) {
+        $.get('tasks.md', function(data) {
             getProblems(data);
         });
     };
