@@ -1,8 +1,8 @@
 "use strict";
 
 function ProblemList() {
-    var subsPidsAPI = "http://uhunt.felix-halim.net/api/subs-pids/";
-    var user2idAPI = "http://uhunt.felix-halim.net/api/uname2uid/";
+    var subsPidsAPI = "https://uhunt.onlinejudge.org/api/subs-pids/";
+    var user2idAPI = "https://uhunt.onlinejudge.org/api/uname2uid/";
     var problemURL = "https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=";
     var accept = 90;
     var never = 0;
